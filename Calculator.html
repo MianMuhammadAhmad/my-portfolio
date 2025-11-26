@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mian Muhammad Ahmad - Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .calculator {
+      background: #ffffffee;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      width: 320px;
+      backdrop-filter: blur(10px);
+    }
+
+    .title {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .display {
+      width: 100%;
+      height: 70px;
+      background: #222;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .display .input {
+      color: #bbb;
+      font-size: 1.1rem;
+      min-height: 20px;
+      word-wrap: break-word;
+    }
+
+    .display .output {
+      color: #00ffcc;
+      font-size: 1.6rem;
+      word-wrap: break-word;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      height: 60px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+      background-color: #f3f4f6;
+      color: #333;
+    }
+
+    button:hover {
+      background-color: #e0e0e0;
+    }
+
+    .operator {
+      background-color: #7b61ff;
+      color: #fff;
+    }
+
+    .operator:hover {
+      background-color: #6a4ff7;
+    }
+
+    .equal {
+      background-color: #34d399;
+      color: #fff;
+    }
+
+    .equal:hover {
+      background-color: #2fb180;
+    }
+
+    .clear {
+      background-color: #ef4444;
+      color: #fff;
+    }
+
+    .clear:hover {
+      background-color: #dc2626;
+    }
+
+    .bottom-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <div class="title">Mian Muhammad Ahmad</div>
+
+    <div class="display" id="display">
+      <div class="input" id="input">0</div>
+      <div class="output" id="output"></div>
+    </div>
+
+    <div class="buttons">
+      <button class="operator" onclick="append('%')">%</button>
+      <button class="operator" onclick="append('/')">÷</button>
+      <button class="operator" onclick="append('*')">×</button>
+      <button class="operator" onclick="append('-')">−</button>
+
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button class="operator" onclick="append('+')">+</button>
+
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button onclick="deleteChar()">⌫</button>
+
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button onclick="append('.')">.</button>
+    </div>
+
+    <!-- Bottom row layout -->
+    <div class="bottom-row">
+      <button class="equal" onclick="calculate()">=</button>
+      <button onclick="append('0')">0</button>
+      <button class="clear" onclick="clearDisplay()">C</button>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById('input');
+    const output = document.getElementById('output');
+
+    function append(value) {
+      if (input.innerText === '0') {
+        input.innerText = value;
+      } else {
+        input.innerText += value;
+      }
+    }
+
+    function clearDisplay() {
+      input.innerText = '0';
+      output.innerText = '';
+    }
+
+    function deleteChar() {
+      if (input.innerText.length === 1) {
+        input.innerText = '0';
+      } else {
+        input.innerText = input.innerText.slice(0, -1);
+      }
+    }
+
+    function calculate() {
+      try {
+        const result = eval(input.innerText.replace('÷', '/').replace('×', '*'));
+        output.innerText = result;
+      } catch {
+        output.innerText = 'Error';
+      }
+    }
+
+    // ✅ Keyboard support
+    document.addEventListener('keydown', (event) => {
+      const key = event.key;
+
+      // Allow numbers and basic operators
+      if (/[\d+\-*/.%]/.test(key)) {
+        append(key);
+      } 
+      else if (key === 'Enter' || key === '=') {
+        event.preventDefault();
+        calculate();
+      } 
+      else if (key === 'Backspace') {
+        deleteChar();
+      } 
+      else if (key.toLowerCase() === 'c') {
+        clearDisplay();
+      } 
+      else if (key === '.') {
+        append('.');
+      }
+    });
+  </script>
+
+</body>
+</html>
