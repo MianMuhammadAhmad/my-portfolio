@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 10 </title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #6a5acd, #00b4d8);
+      padding: 30px;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 28px;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 3px #000;
+    }
+
+    button {
+      padding: 10px 16px;
+      margin-right: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #fff;
+      color: #333;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ffc107;
+      color: #000;
+      transform: scale(1.05);
+    }
+
+    #products div {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      backdrop-filter: blur(4px);
+      border-left: 6px solid #ffd166;
+      transition: 0.3s;
+    }
+
+    #products div:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-3px);
+    }
+
+    strong {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2><u>Product List</u> </h2>
+
+  <button onclick="loadData()">Load Products</button>
+  <button onclick="sortPrice()">Sort by Price (Low → High)</button>
+  <button onclick="filterCheap()">Filter: Price < ₨1000</button>
+
+  <div id="products"></div>
+
+  <script>
+    // Inline JSON Data — Prices in PKR
+    const jsonData = [
+      { id: 1, title: "Keyboard", price: 1500 },
+      { id: 2, title: "Gaming Mouse", price: 2500 },
+      { id: 3, title: "Monitor", price: 18000 },
+      { id: 4, title: "USB Cable", price: 300 },
+      { id: 5, title: "Headphones", price: 3500 }
+    ];
+
+    let allProducts = [];
+
+    // Load Data (Simulated Fetch)
+    const loadData = () => {
+      allProducts = jsonData;
+      renderProducts(allProducts);
+    };
+
+    // Render Products
+    const renderProducts = (products) => {
+      const container = document.getElementById("products");
+      container.innerHTML = products
+        .map(({ title, price }) => `
+          <div>
+            <strong>${title}</strong><br>
+            Price: ₨${price.toLocaleString()}
+          </div>
+        `)
+        .join("");
+    };
+
+    // Sort by Price
+    const sortPrice = () => {
+      const sorted = [...allProducts].sort((a, b) => a.price - b.price);
+      renderProducts(sorted);
+    };
+
+    // Filter Price < 1000 PKR
+    const filterCheap = () => {
+      const filtered = allProducts.filter(item => item.price < 1000);
+      renderProducts(filtered);
+    };
+  </script>
+
+</body>
+</html>
